@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# gitprune: Checkout to main, pull, and remove local branches that no longer exist on remote.
+
+git fetch --prune
+
+if git show-ref --verify --quiet refs/heads/main; then
+    git checkout main
+elif git show-ref --verify --quiet refs/heads/master; then
+    git checkout master
+else
+    echo "Error: Could not find main or master branch."
+    exit 1
+fi
+
+git pull
+
+GONE_BRANCHES=$(git branch -vv | grep ': gone]' | awk '{print $1}' | sed 's/\*//')
+
+if [ -n "$GONE_BRANCHES" ]; then
+    echo "$GONE_BRANCHES" | xargs git branch -D
+fi
+
+echo "Done!"
