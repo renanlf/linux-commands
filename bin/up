@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# up: Perform a sudo apt update and upgrade with -y
+
+sudo apt update
+sudo apt upgrade -y
