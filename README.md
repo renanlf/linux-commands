@@ -12,6 +12,14 @@ Checkout to `main` (or `master`), do a `git pull`, and remove local branches tha
 gitprune
 ```
 
+### `up`
+Update the package lists and upgrade all installed packages using `sudo apt`.
+
+**Usage:**
+```bash
+up
+```
+
 ## How to use
 
 To make these commands available in your system, you can add the `bin/` directory to your `PATH`.
