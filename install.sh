@@ -1,8 +1,30 @@
 #!/bin/bash
 
-# install.sh: Adds the bin directory of this project to the user's PATH.
+# install.sh: One-liner installation script for personal linux-commands.
+# Usage: curl -sSL https://raw.githubusercontent.com/renanlf/linux-commands/main/install.sh | bash
 
-PROJECT_BIN_DIR="$(cd "$(dirname "$0")" && pwd)/bin"
+set -e
+
+INSTALL_DIR="$HOME/.linux-commands"
+REPO_URL="https://github.com/renanlf/linux-commands.git"
+
+# Check if git is installed
+if ! command -v git >/dev/null 2>&1; then
+    echo "Error: git is not installed. Please install git and try again."
+    exit 1
+fi
+
+if [ -d "$INSTALL_DIR" ]; then
+    echo "Updating commands..."
+    cd "$INSTALL_DIR"
+    git fetch origin main >/dev/null 2>&1
+    git reset --hard origin/main >/dev/null 2>&1
+else
+    echo "Installing commands..."
+    git clone "$REPO_URL" "$INSTALL_DIR" >/dev/null 2>&1
+fi
+
+PROJECT_BIN_DIR="$INSTALL_DIR/bin"
 
 # Determine which config file to use
 if [[ "$SHELL" == */zsh ]]; then
@@ -10,21 +32,23 @@ if [[ "$SHELL" == */zsh ]]; then
 elif [[ "$SHELL" == */bash ]]; then
     CONFIG_FILE="$HOME/.bashrc"
 else
-    echo "Unsupported shell: $SHELL. Please manually add $PROJECT_BIN_DIR to your PATH."
-    exit 1
+    # Fallback to .bashrc if shell is unknown but bash is being used to run this
+    CONFIG_FILE="$HOME/.bashrc"
 fi
 
+# Ensure config file exists
+touch "$CONFIG_FILE"
+
 # Check if the PATH is already exported in the config file
-if grep -q "$PROJECT_BIN_DIR" "$CONFIG_FILE"; then
-    echo "The directory $PROJECT_BIN_DIR is already in your $CONFIG_FILE."
-else
-    echo "Adding $PROJECT_BIN_DIR to $CONFIG_FILE..."
+if ! grep -q "$PROJECT_BIN_DIR" "$CONFIG_FILE"; then
+    echo "Configuring PATH in $CONFIG_FILE..."
     echo "" >> "$CONFIG_FILE"
     echo "# Personal Bash Commands" >> "$CONFIG_FILE"
-    echo "export PATH="\$PATH:$PROJECT_BIN_DIR"" >> "$CONFIG_FILE"
-    
-    echo "Installation complete!"
-    echo "Sourcing $CONFIG_FILE to apply changes..."
-    source "$CONFIG_FILE"
-    echo "Done! If the command is not available, please restart your terminal or run 'source $CONFIG_FILE'."
+    echo "export PATH=\"\$PATH:$PROJECT_BIN_DIR\"" >> "$CONFIG_FILE"
 fi
+
+echo "--------------------------------------------------"
+echo "Installation/Update complete!"
+echo "Please restart your terminal or run:"
+echo "  source $CONFIG_FILE"
+echo "--------------------------------------------------"

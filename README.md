@@ -20,21 +20,20 @@ Update the package lists and upgrade all installed packages using `sudo apt`.
 up
 ```
 
-## How to use
+## How to Install or Update
 
-To make these commands available in your system, you can add the `bin/` directory to your `PATH`.
-
-1. Copy this repository to your preferred location (e.g., `~/projects/linux-commands`).
-2. Run the install script (use `source` to apply changes immediately to your current session):
+To install these commands or update existing ones, run the following command in your terminal:
 
 ```bash
-source ./install.sh
+curl -sSL https://raw.githubusercontent.com/renanlf/linux-commands/main/install.sh | bash
 ```
 
-Alternatively, you can manually add the following line to your `~/.bashrc` or `~/.zshrc`:
+This will:
+1. Clone (or update) this repository to `~/.linux-commands`.
+2. Add the `bin/` directory to your `PATH` in `~/.bashrc` or `~/.zshrc`.
+
+After installation, restart your terminal or run:
 
 ```bash
-export PATH="$PATH:/home/renanlf/workspace/projects/linux-commands/bin"
+source ~/.bashrc  # Or ~/.zshrc if you use Zsh
 ```
-
-3. Restart your terminal or run `source ~/.bashrc` (or `~/.zshrc`) to apply the changes.
