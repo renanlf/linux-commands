@@ -79,6 +79,55 @@ if ! grep -q "$PROJECT_BIN_DIR" "$CONFIG_FILE"; then
     echo "export PATH=\"\$PATH:$PROJECT_BIN_DIR\"" >> "$CONFIG_FILE"
 fi
 
+# --- Install APT Dependencies ---
+if command -v apt-get >/dev/null 2>&1; then
+    APT_PACKAGES_FILE="$INSTALL_DIR/config/apt-packages.txt"
+    APT_PPAS_FILE="$INSTALL_DIR/config/apt-ppas.txt"
+
+    # Handle PPAs
+    if [ -f "$APT_PPAS_FILE" ]; then
+        echo "Checking for PPAs..."
+        ppa_added=false
+        # Ensure software-properties-common is installed for add-apt-repository
+        if ! dpkg-query -W -f='${Status}' software-properties-common 2>/dev/null | grep -q "ok installed"; then
+            echo "Installing software-properties-common for PPA support..."
+            sudo apt-get update && sudo apt-get install -y software-properties-common
+        fi
+
+        while IFS= read -r ppa || [ -n "$ppa" ]; do
+            # Skip empty lines and comments
+            [[ -z "$ppa" || "$ppa" =~ ^#.*$ ]] && continue
+            echo "Adding PPA: $ppa"
+            sudo add-apt-repository -y "$ppa"
+            ppa_added=true
+        done < "$APT_PPAS_FILE"
+
+        if [ "$ppa_added" = true ]; then
+            sudo apt-get update
+        fi
+    fi
+
+    # Handle Packages
+    if [ -f "$APT_PACKAGES_FILE" ]; then
+        echo "Checking for missing APT packages..."
+        missing_packages=""
+        while IFS= read -r pkg || [ -n "$pkg" ]; do
+            # Skip empty lines and comments
+            [[ -z "$pkg" || "$pkg" =~ ^#.*$ ]] && continue
+            if ! dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "ok installed"; then
+                missing_packages="$missing_packages $pkg"
+            fi
+        done < "$APT_PACKAGES_FILE"
+
+        if [ -n "$missing_packages" ]; then
+            echo "Installing missing packages:$missing_packages"
+            sudo apt-get install -y $missing_packages
+        else
+            echo "All configured APT packages are already installed."
+        fi
+    fi
+fi
+
 echo "--------------------------------------------------"
 echo "Installation/Update complete!"
 echo "Please restart your terminal or log out and back in to use Zsh."
