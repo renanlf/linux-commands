@@ -58,12 +58,12 @@ if [ "$SHELL" != "$(command -v zsh)" ]; then
 fi
 
 # Copy the .zshrc from the repo
-if [ -f "$INSTALL_DIR/.zshrc" ]; then
-    echo "Copying repository .zshrc to ~/.zshrc..."
+if [ -f "$INSTALL_DIR/config/.zshrc" ]; then
+    echo "Copying repository config/.zshrc to ~/.zshrc..."
     if [ -f "$HOME/.zshrc" ]; then
         cp "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +%Y%m%d%H%M%S)"
     fi
-    cp "$INSTALL_DIR/.zshrc" "$HOME/.zshrc"
+    cp "$INSTALL_DIR/config/.zshrc" "$HOME/.zshrc"
 fi
 
 CONFIG_FILE="$HOME/.zshrc"
