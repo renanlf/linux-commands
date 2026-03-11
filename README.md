@@ -30,10 +30,9 @@ curl -sSL https://raw.githubusercontent.com/renanlf/linux-commands/main/install.
 
 This will:
 1. Clone (or update) this repository to `~/.linux-commands`.
-2. Add the `bin/` directory to your `PATH` in `~/.bashrc` or `~/.zshrc`.
+2. Install `zsh` and `oh-my-zsh` if they are not already installed.
+3. Set `zsh` as your default shell.
+4. Copy the repository's `.zshrc` file to your home directory (backing up any existing `.zshrc`).
+5. Add the `bin/` directory to your `PATH` in `~/.zshrc`.
 
-After installation, restart your terminal or run:
-
-```bash
-source ~/.bashrc  # Or ~/.zshrc if you use Zsh
-```
+After installation, restart your terminal or log out and back in to use Zsh.
