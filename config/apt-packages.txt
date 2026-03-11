@@ -1,0 +1,19 @@
+bc              # Arbitrary precision calculator
+ca-certificates # Common CA certificates (required for secure connections)
+curl            # Command line tool for transferring data with URL syntax
+dnsutils        # Clients for DNS (dig, nslookup)
+g++             # GNU C++ compiler (installs libc6, libgcc-s1, libstdc++6)
+gh              # GitHub CLI
+git             # Distributed version control system
+jq              # Command-line JSON processor
+less            # Terminal pager
+lsof            # List open files
+make            # Utility for directing compilation
+man-db          # On-line manual pager system
+procps          # System utilities (top, ps, etc.)
+psmisc          # Utilities for managing processes (killall, fuser, pstree)
+python3         # Python 3 interpreter
+ripgrep         # Fast grep replacement
+rsync           # Fast, versatile, remote (and local) file-copying tool
+socat           # Multipurpose relay (SOket CAT)
+unzip           # De-archiver for .zip files
