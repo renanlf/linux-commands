@@ -26,17 +26,49 @@ fi
 
 PROJECT_BIN_DIR="$INSTALL_DIR/bin"
 
-# Determine which config file to use
-if [[ "$SHELL" == */zsh ]]; then
-    CONFIG_FILE="$HOME/.zshrc"
-elif [[ "$SHELL" == */bash ]]; then
-    CONFIG_FILE="$HOME/.bashrc"
-else
-    # Fallback to .bashrc if shell is unknown but bash is being used to run this
-    CONFIG_FILE="$HOME/.bashrc"
+# Install zsh if it's not installed
+if ! command -v zsh >/dev/null 2>&1; then
+    echo "Zsh is not installed. Attempting to install zsh..."
+    if command -v apt-get >/dev/null 2>&1; then
+        sudo apt-get update && sudo apt-get install -y zsh
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y zsh
+    elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S --noconfirm zsh
+    else
+        echo "Could not find a supported package manager to install zsh. Please install zsh manually."
+        exit 1
+    fi
 fi
 
-# Ensure config file exists
+# Install Oh My Zsh if not installed
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Installing Oh My Zsh..."
+    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+# Set zsh as default shell
+if [ "$SHELL" != "$(command -v zsh)" ]; then
+    echo "Setting zsh as the default shell..."
+    # chsh without sudo is preferred but often requires password. We use standard chsh.
+    # If standard chsh fails, we try sudo chsh.
+    if ! chsh -s "$(command -v zsh)" "$USER"; then
+        sudo chsh -s "$(command -v zsh)" "$USER"
+    fi
+fi
+
+# Copy the .zshrc from the repo
+if [ -f "$INSTALL_DIR/.zshrc" ]; then
+    echo "Copying repository .zshrc to ~/.zshrc..."
+    if [ -f "$HOME/.zshrc" ]; then
+        cp "$HOME/.zshrc" "$HOME/.zshrc.bak.$(date +%Y%m%d%H%M%S)"
+    fi
+    cp "$INSTALL_DIR/.zshrc" "$HOME/.zshrc"
+fi
+
+CONFIG_FILE="$HOME/.zshrc"
+
+# Ensure config file exists (should exist now, but just in case)
 touch "$CONFIG_FILE"
 
 # Check if the PATH is already exported in the config file
@@ -49,6 +81,5 @@ fi
 
 echo "--------------------------------------------------"
 echo "Installation/Update complete!"
-echo "Please restart your terminal or run:"
-echo "  source $CONFIG_FILE"
+echo "Please restart your terminal or log out and back in to use Zsh."
 echo "--------------------------------------------------"

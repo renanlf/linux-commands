@@ -8,7 +8,7 @@ This is a collection of personal Bash commands (`linux-commands`) designed to si
 As a collection of Bash scripts, there is no formal build process. The scripts are intended to be installed globally on the user's system by adding the `bin/` directory to the shell's `PATH`.
 
 - **Installation/Updating**:
-  Run the `install.sh` script or use the `curl` one-liner. It clones the repository to `~/.linux-commands` and updates the `PATH` in `~/.bashrc` or `~/.zshrc`.
+  Run the `install.sh` script or use the `curl` one-liner. It clones the repository to `~/.linux-commands`, installs `zsh` and `oh-my-zsh`, sets `zsh` as the default shell, copies the project's `.zshrc` configuration, and updates the `PATH`.
   ```bash
   curl -sSL https://raw.githubusercontent.com/renanlf/linux-commands/main/install.sh | bash
   ```
