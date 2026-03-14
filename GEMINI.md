@@ -1,6 +1,7 @@
 # Project Overview
 This is a collection of personal Bash commands (`linux-commands`) designed to simplify common terminal tasks on Linux. The project consists of standalone executable scripts located in the `bin/` directory.
 
+- **`cg`**: Opens Visual Studio Code and the Gemini CLI in the current directory.
 - **`gitprune`**: Checks out the `main` or `master` branch, pulls the latest changes, and prunes local branches that no longer exist on the remote repository.
 - **`up`**: Updates package lists and upgrades all installed packages using `sudo apt`.
 
@@ -16,6 +17,7 @@ As a collection of Bash scripts, there is no formal build process. The scripts a
 - **Execution**:
   Once installed, the commands can be executed from any directory:
   ```bash
+  cg
   gitprune
   up
   ```

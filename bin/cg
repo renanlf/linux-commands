@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# cg: Open Visual Studio Code and Gemini CLI in the current directory
+
+code . > /dev/null 2>&1
+gemini

@@ -4,6 +4,14 @@ A collection of personal bash commands to simplify common tasks.
 
 ## Commands
 
+### `cg`
+Open both Visual Studio Code and the Gemini CLI in the current directory.
+
+**Usage:**
+```bash
+cg
+```
+
 ### `gitprune`
 Checkout to `main` (or `master`), do a `git pull`, and remove local branches that no longer exist on the remote.
 
