@@ -3,6 +3,7 @@ This is a collection of personal Bash commands (`linux-commands`) designed to si
 
 - **`cg`**: Opens Visual Studio Code and the Gemini CLI in the current directory.
 - **`gitprune`**: Checks out the `main` or `master` branch, pulls the latest changes, and prunes local branches that no longer exist on the remote repository.
+- **`mergepdf`**: Merges multiple PDF files into a single PDF file using Ghostscript.
 - **`up`**: Updates package lists and upgrades all installed packages using `sudo apt`.
 
 # Building and Running
@@ -19,6 +20,7 @@ As a collection of Bash scripts, there is no formal build process. The scripts a
   ```bash
   cg
   gitprune
+  mergepdf
   up
   ```
 

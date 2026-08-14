@@ -20,6 +20,14 @@ Checkout to `main` (or `master`), do a `git pull`, and remove local branches tha
 gitprune
 ```
 
+### `mergepdf`
+Merge multiple PDF files into a single PDF file using Ghostscript.
+
+**Usage:**
+```bash
+mergepdf output.pdf input1.pdf input2.pdf ...
+```
+
 ### `up`
 Update the package lists and upgrade all installed packages using `sudo apt`.
 

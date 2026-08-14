@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Check if at least two arguments are provided (1 output, at least 1 input)
+if [ "$#" -lt 2 ]; then
+    echo "Usage: mergepdf <output.pdf> <input1.pdf> [input2.pdf ...]"
+    exit 1
+fi
+
+OUTPUT_FILE="$1"
+shift
+
+# Check if input files exist
+for file in "$@"; do
+    if [ ! -f "$file" ]; then
+        echo "Error: File '$file' not found."
+        exit 1
+    fi
+done
+
+# Merge using Ghostscript
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile="$OUTPUT_FILE" "$@"
+
+if [ $? -eq 0 ]; then
+    echo "Successfully merged into $OUTPUT_FILE"
+else
+    echo "Error merging PDFs."
+    exit 1
+fi
